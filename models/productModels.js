@@ -1,7 +1,8 @@
 // Vars
-const products = require("../data/products");
+let products = require("../data/products");
 const { v4: uuidv4 } = require("uuid");
 const { writeDataToFaile } = require("../util");
+const { delProduct } = require("../controller/productControler");
 
 // =========== Functions : ===========
 function findAll() {
@@ -28,9 +29,28 @@ function create(product) {
     resolve(newProduct);
   });
 }
+// Update Function :
+function update(id, product) {
+  return new Promise((resolve, reject) => {
+    const index = products.findIndex((p) => p.id === id);
+    products[index] = { id, ...product };
+    writeDataToFaile("./data/products.json", products);
+    resolve(products[index]);
+  });
+}
+// Del Function :
+function remove(id) {
+  return new Promise((resolve, reject) => {
+    products = products.filter((p) => p.id !== id);
+    writeDataToFaile("./data/products.json", products);
+    resolve(products[index]);
+  });
+}
 //------------------------
 module.exports = {
   findAll,
   findById,
   create,
+  update,
+  remove,
 };
